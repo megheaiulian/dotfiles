@@ -30,3 +30,26 @@ if test -x "$MY_LOCAL_BIN"
 end
 
 set -g EDITOR nvim
+
+alias gP='git push'
+alias ga='git add .'
+alias gb='git branch'
+alias gck='git checkout'
+alias gc='git commit'
+alias gd='git diff'
+alias gf='git fetch'
+alias gl='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit '
+alias glp='git log -p'
+alias gp='git pull; and echo'
+alias gps='git push; and echo; and git status; and echo'
+alias gs='git status'
+
+alias nv='nvim'
+alias v='vim'
+
+alias vu='vagrant up'
+alias vp='vagrant provision'
+alias vrp='vagrant reload --provision'
+alias vd='vagrant destroy'
+alias vs='vagrant ssh'
+alias vh='vagrant halt'
