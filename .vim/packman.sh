@@ -14,168 +14,168 @@ IFS="
 "
 
 usage() {
-  echo "$0 [mode]"
-  echo
-  echo "mode can be:"
-  echo "    version    Show last commit for all installed plugins."
-  echo "    install    Install new plugins; don't update existing."
-  echo "    update     Update existing plugins; don't update new."
-  echo "    orphans    Remove 'orphaned' packages no longer in the config."
-  echo
-  echo "If no mode is given we will install new plugins and update existing."
+	echo "$0 [mode]"
+	echo
+	echo "mode can be:"
+	echo "    version    Show last commit for all installed plugins."
+	echo "    install    Install new plugins; don't update existing."
+	echo "    update     Update existing plugins; don't update new."
+	echo "    orphans    Remove 'orphaned' packages no longer in the config."
+	echo
+	echo "If no mode is given we will install new plugins and update existing."
 }
 
 rp() {
-  # TODO: readlink -f doesn't always work on all platforms (specifically, I
-  # think it won't work on OSX).
-  readlink -f "$1"
+	# TODO: readlink -f doesn't always work on all platforms (specifically, I
+	# think it won't work on OSX).
+	readlink -f "$1"
 }
 
 make_helptags() {
-  vim -u NONE --noplugins +':helptags ALL' +:q >/dev/null 2>&1
+	vim -u NONE --noplugins +':helptags ALL' +:q >/dev/null 2>&1
 }
 
 # Filter commented out repos
 filter_comments() {
-  for repo in "$@"; do
-    [ $(echo "$repo" | head -c1) = "#" ] && continue
-    [ -z $(echo "$repo" | tr -d ' ') ] && continue
-    echo $repo
-  done
+	for repo in "$@"; do
+		[ $(echo "$repo" | head -c1) = "#" ] && continue
+		[ -z $(echo "$repo" | tr -d ' ') ] && continue
+		echo $repo
+	done
 }
 
 prefix_with() {
-  local prefix=$1; shift
-  for repo in "$@"; do
-    echo "$prefix$repo"
-  done
+	local prefix=$1; shift
+	for repo in "$@"; do
+		echo "$prefix$repo"
+	done
 }
 
 # Show versions
 cmd_version() {
-  for dir in "$@"; do
-    local dir=$(echo "$dir" | tr -d ' ')
-    local pkg_dir=$(echo "$dir" | cut -d/ -f1)
-    local repo=$(echo "$dir" | cut -d/ -f2,3)
-    local plugin_name=$(basename "$repo")
-    local destdir="$pkg_dir/$plugin_name"
+	for dir in "$@"; do
+		local dir=$(echo "$dir" | tr -d ' ')
+		local pkg_dir=$(echo "$dir" | cut -d/ -f1)
+		local repo=$(echo "$dir" | cut -d/ -f2,3)
+		local plugin_name=$(basename "$repo")
+		local destdir="$pkg_dir/$plugin_name"
 
-    printf "%-36s %s" "$dir"
-    if [ ! -e "$destdir" ]; then
-      echo "Not installed"
-    else
-      (
-      cd "$destdir"
-      git log -n1 --date=short --format='%h %ad %s' || :
-      )
-    fi
-  done
+		printf "%-36s %s" "$dir"
+		if [ ! -e "$destdir" ]; then
+			echo "Not installed"
+		else
+			(
+				cd "$destdir"
+				git log -n1 --date=short --format='%h %ad %s' || :
+			)
+		fi
+	done
 }
 
 cmd_orphans() {
-  local in_config=""
-  for dir in "$@"; do
-    local dir=$(echo "$dir" | tr -d ' ')
-    local pkg_dir=$(echo "$dir" | cut -d/ -f1)
-    local repo=$(echo "$dir" | cut -d/ -f2,3)
-    local plugin_name=$(basename "$repo")
-    local destdir="$pkg_dir/$plugin_name"
+	local in_config=""
+	for dir in "$@"; do
+		local dir=$(echo "$dir" | tr -d ' ')
+		local pkg_dir=$(echo "$dir" | cut -d/ -f1)
+		local repo=$(echo "$dir" | cut -d/ -f2,3)
+		local plugin_name=$(basename "$repo")
+		local destdir="$pkg_dir/$plugin_name"
 
-    in_config=$(printf "$destdir\n$in_config")
-  done
+		in_config=$(printf "$destdir\n$in_config")
+	done
 
-  rm_orphans "$(find_orphans "$in_config")"
-  make_helptags
+	rm_orphans "$(find_orphans "$in_config")"
+	make_helptags
 }
 
 find_orphans() {
-  local in_config="$@"
-  local installed="$(find . -maxdepth 2 -a -type d)"
-  for dir in $installed; do
-    echo "$in_config" | grep -q ${dir#./} && continue
-    echo $dir
-  done
+	local in_config="$@"
+	local installed="$(find . -maxdepth 2 -a -type d)"
+	for dir in $installed; do
+		echo "$in_config" | grep -q ${dir#./} && continue
+		echo $dir
+	done
 }
 
 rm_orphans() {
-  if [ -z "$@" ]; then
-    echo "No orphans found."
-    return
-  fi
+	if [ -z "$@" ]; then
+		echo "No orphans found."
+		return
+	fi
 
-  for repo in $@; do
-    echo "  $repo"
-  done
-  printf "Remove these directories? [y/N] "
-  read answer
-  if [ "$answer" != "y" ]; then
-    echo "Okay then."
-    exit 0
-  fi
+	for repo in $@; do
+		echo "  $repo"
+	done
+	printf "Remove these directories? [y/N] "
+	read answer
+	if [ "$answer" != "y" ]; then
+		echo "Okay then."
+		exit 0
+	fi
 
-  for repo in $@; do
-    # Use -f for the git dir since that's write-protected by default.
-    rm -fr "$repo/.git"
-    rm -vr "$repo"
-  done
+	for repo in $@; do
+		# Use -f for the git dir since that's write-protected by default.
+		rm -fr "$repo/.git"
+		rm -vr "$repo"
+	done
 }
 
 # First argument is "start" or "opt". This is here just for display purposes.
 # Second argument is the mode: "install", "update", or "" (empty) for both
 # All the rest are GitHub repos.
 cmd_install() {
-  local mode=$1; shift
-  local want="$*"
+	local mode=$1; shift
+	local want="$*"
 
-  local total=$(echo "$want" | wc -l)
-  local i=0
-  for dir in $want; do
-    local dir=$(echo "$dir" | tr -d ' ')
-    local pkg_dir=$(echo "$dir" | cut -d/ -f1)
-    local repo=$(echo "$dir" | cut -d/ -f2,3)
-    local plugin_name=$(basename "$repo")
-    local destdir="$pkg_dir/$plugin_name"
+	local total=$(echo "$want" | wc -l)
+	local i=0
+	for dir in $want; do
+		local dir=$(echo "$dir" | tr -d ' ')
+		local pkg_dir=$(echo "$dir" | cut -d/ -f1)
+		local repo=$(echo "$dir" | cut -d/ -f2,3)
+		local plugin_name=$(basename "$repo")
+		local destdir="$pkg_dir/$plugin_name"
 
-    i=$(($i + 1))
+		i=$(($i + 1))
 
-    # Update existing
-    if [ -e "$destdir" ]; then
-      [ "$mode" = "install" ] && continue
-      printf "%-8s" "($i/$total)"
-      echo "updating '$destdir' from '$repo'"
-      do_update &
-      # Install new
-    else
-      [ "$mode" = "update" ] && continue
-      printf "%-8s" "($i/$total)"
-      echo "cloning '$repo' to '$destdir'"
-      do_install &
-    fi
-  done
-  make_helptags
+		# Update existing
+		if [ -e "$destdir" ]; then
+			[ "$mode" = "install" ] && continue
+			printf "%-8s" "($i/$total)"
+			echo "updating '$destdir' from '$repo'"
+			do_update &
+		# Install new
+		else
+			[ "$mode" = "update" ] && continue
+			printf "%-8s" "($i/$total)"
+			echo "cloning '$repo' to '$destdir'"
+			do_install &
+		fi
+	done
+	make_helptags
 }
 
 do_update() {
-  (
-  cd "$destdir"
-  git pull --quiet || return
-  )
+	(
+		cd "$destdir"
+		git pull --quiet || return
+	)
 }
 
 do_install() {
-  git clone --quiet "https://github.com/$repo" --depth 1 "$destdir" || return
-  (
-  cd "$destdir"
-  )
+	git clone --quiet "https://github.com/$repo" "$destdir" || return
+	(
+		cd "$destdir"
+	)
 }
 
 if [ -f "$HOME/.vim/packman.conf" ]; then
-  . "$HOME/.vim/packman.conf"
+	. "$HOME/.vim/packman.conf"
 elif [ -f ./packman.conf ]; then
-  . ./packman.conf
+	. ./packman.conf
 else
-  echo "error: cannot find packman.conf in $HOME/.vim/ or ./"
-  exit 1
+	echo "error: cannot find packman.conf in $HOME/.vim/ or ./"
+	exit 1
 fi
 
 install_dir=${install_dir:-"$HOME/.vim/pack/plugins"}
@@ -190,15 +190,15 @@ $(prefix_with start/ $want_start)"
 
 mode=${1:-}
 case "$mode" in
-  version) cmd_version $want_combined ;;
-  orphans) cmd_orphans $want_combined ;;
-  install) cmd_install install $want_combined ;;
-  update)  cmd_install update  $want_combined ;;
-  "")      cmd_install ""      $want_combined ;;
-  *)
-    usage
-    exit 1
-    ;;
+	version) cmd_version $want_combined ;;
+	orphans) cmd_orphans $want_combined ;;
+	install) cmd_install install $want_combined ;;
+	update)  cmd_install update  $want_combined ;;
+	"")      cmd_install ""      $want_combined ;;
+	*)
+		usage
+		exit 1
+		;;
 esac
 
 
