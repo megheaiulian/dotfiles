@@ -53,3 +53,11 @@ alias vrp='vagrant reload --provision'
 alias vd='vagrant destroy'
 alias vs='vagrant ssh'
 alias vh='vagrant halt'
+
+alias ds='dotfiles status'
+alias da='dotfiles add'
+alias dc='dotfiles commit'
+alias dd='dotfiles diff'
+alias dp='dotfiles pull'
+alias dP='dotfiles push'
+
