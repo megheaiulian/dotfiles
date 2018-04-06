@@ -1,6 +1,6 @@
 self: super:
 
-let 
+let
   buildEnv = self.buildEnv;
   unstable = import <nixos-unstable> {};
 in {
@@ -47,8 +47,15 @@ in {
       python36Packages.neovim
       python27Packages.yamllint
 
+      # terminals
+      termite
+
+      # file managers
+      vifm
+      ranger
+
       # langs
-      nodejs-8_x 
+      nodejs-8_x
       ruby
 
       # misc
@@ -57,13 +64,14 @@ in {
       transmission_gtk
       stress
       glmark2
-      
+
       # git
       gitAndTools.tig
       git-lfs
       git-keyring
       gitkraken_latest
-      
+      gitAndTools.diff-so-fancy
+
       # configuration management
       vagrant_2
       redir
