@@ -99,6 +99,15 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 AutoCmd BufEnter,CursorHold,CursorHoldI,CursorMoved,CursorMovedI,FocusGained,BufEnter,FocusLost,WinLeave * checktime
 AutoCmd BufEnter * syntax sync minlines=99999
 AutoCmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe 'normal! g`"zz' | endif
+AutoCmd CmdLineEnter * packadd cmdline-completion
+AutoCmd BufNewFile,BufReadPre * packadd scalpel
+AutoCmd BufNewFile,BufReadPre * packadd ferret
+AutoCmd BufNewFile,BufReadPre * packadd vim-sneak
+AutoCmd BufNewFile,BufReadPre * packadd vim-repeat
+AutoCmd BufNewFile,BufReadPre * packadd vim-commentary
+AutoCmd BufNewFile,BufReadPre * packadd vim-surround
+AutoCmd BufNewFile,BufReadPre * packadd vim-fugitive
+AutoCmd BufNewFile,BufReadPre * packadd vim-yankstack
 
 nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap j gj
@@ -159,24 +168,18 @@ colorscheme apprentice
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-let g:clever_f_ignore_case = 1
-let g:clever_f_smart_case = 1
-let g:clever_f_fix_key_direction = 1
-
-let g:ctrlp_max_files = 0
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_use_caching = 0
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_open_multi = '1v'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-nnoremap <C-p> :packadd ctrlp.vim<CR>:CtrlP<CR>
-nnoremap <Bs> :packadd ctrlp.vim<CR>:CtrlPBuffer<CR>
-nnoremap <C-_> :packadd ctrlp.vim<CR>:CtrlPMRUFiles<CR>
-nnoremap <C-d> :packadd ctrlp.vim<CR>:CtrlPCurFile<CR>
+" let g:ctrlp_max_files = 0
+" let g:ctrlp_working_path_mode = ''
+" let g:ctrlp_switch_buffer = 0
+" let g:ctrlp_use_caching = 0
+" let g:ctrlp_show_hidden = 1
+" let g:ctrlp_open_multi = '1v'
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+" nnoremap <C-p> :packadd ctrlp.vim<CR>:CtrlP<CR>
+" nnoremap <Bs> :packadd ctrlp.vim<CR>:CtrlPBuffer<CR>
+" nnoremap <C-_> :packadd ctrlp.vim<CR>:CtrlPMRUFiles<CR>
+" nnoremap <C-d> :packadd ctrlp.vim<CR>:CtrlPCurFile<CR>
 
 let g:ale_sign_error = '→'
 let g:ale_sign_warning = '→'
@@ -197,7 +200,17 @@ let g:ale_linter_aliases = {
 let g:sneak#label = 1
 nmap s <Plug>SneakLabel_s
 nmap S <Plug>SneakLabel_S
+
 let g:netrw_banner=0
 let g:netrw_liststyle = 3
 
 let g:ScalpelCommand='S'
+
+let g:Lf_ShortcutF = '<C-P>'
+let g:Lf_ShortcutB = '<Bs>'
+let g:Lf_WindowHeight = 0.20
+let g:Lf_DefaultMode = 'FullPath'
+let g:Lf_FollowLinks = 'yes'
+nnoremap <Leader>m :LeaderfMru<CR>
+nnoremap <Leader>h :LeaderfMruCwd<CR>
+nnoremap <Leader>k :LeaderfHistoryCmd<CR>
