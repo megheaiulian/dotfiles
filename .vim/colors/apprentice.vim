@@ -59,7 +59,7 @@ if ($TERM =~# '256' || &t_Co >= 256) || has('gui_running')
   hi Type             ctermbg=NONE ctermfg=103  guibg=NONE    guifg=#8787af cterm=NONE           gui=NONE
   hi Underlined       ctermbg=NONE ctermfg=66   guibg=NONE    guifg=#5f8787 cterm=underline      gui=underline
 
-  hi NonText          ctermbg=NONE ctermfg=239  guibg=NONE    guifg=#585858 cterm=NONE           gui=NONE
+  hi NonText          ctermbg=NONE ctermfg=237  guibg=NONE    guifg=#585858 cterm=NONE           gui=NONE
 
   hi Pmenu            ctermbg=238  ctermfg=250  guibg=#444444 guifg=#bcbcbc cterm=NONE           gui=NONE
   hi PmenuSbar        ctermbg=240  ctermfg=NONE guibg=#585858 guifg=NONE    cterm=NONE           gui=NONE
@@ -97,7 +97,7 @@ if ($TERM =~# '256' || &t_Co >= 256) || has('gui_running')
   hi WildMenu         ctermbg=110  ctermfg=235  guibg=#8fafd7 guifg=#262626 cterm=NONE           gui=NONE
 
   hi Function         ctermbg=NONE ctermfg=229  guibg=NONE    guifg=#ffffaf cterm=NONE           gui=NONE
-  hi SpecialKey       ctermbg=NONE ctermfg=239  guibg=NONE    guifg=#585858 cterm=NONE           gui=NONE
+  hi SpecialKey       ctermbg=NONE ctermfg=237  guibg=NONE    guifg=#585858 cterm=NONE           gui=NONE
   hi Title            ctermbg=NONE ctermfg=231  guibg=NONE    guifg=#ffffff cterm=NONE           gui=NONE
 
   hi DiffAdd          ctermbg=235  ctermfg=108  guibg=#262626 guifg=#87af87 cterm=reverse        gui=reverse
