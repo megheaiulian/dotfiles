@@ -24,6 +24,7 @@ else
 endif
 set number
 set shortmess+=I
+set viminfo='10,\"100,:20,%,n~/.vim/.viminfo
 set mouse=a
 set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵
 set showmatch
@@ -208,3 +209,11 @@ let g:Lf_FollowLinks = 'yes'
 nnoremap <Leader>m :LeaderfMru<CR>
 nnoremap <Leader>h :LeaderfMruCwd<CR>
 nnoremap <Leader>k :LeaderfHistoryCmd<CR>
+
+function! s:mkdir()
+  let s:dir = expand('<afile>:p:h')
+  if !isdirectory(s:dir)
+    call mkdir(s:dir, 'p')
+  endif
+endfunction
+AutoCmd BufWritePre * call s:mkdir()
