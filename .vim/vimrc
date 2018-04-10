@@ -24,7 +24,6 @@ else
 endif
 set number
 set shortmess+=I
-set showmode
 set mouse=a
 set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵
 set autoread
@@ -35,20 +34,17 @@ set splitright
 set splitbelow
 set switchbuf=useopen,usetab
 set wildmenu
-set wildmode=longest:full,list:full
-set previewheight=20
 set complete=.,w,b,u,t,i,k
 set omnifunc=syntaxcomplete#Complete
 set completeopt=longest,menuone
 set pumheight=15
 set autoindent
 set expandtab
-set tabstop=2
-set shiftwidth=2
 set softtabstop=2
+set shiftwidth=2
+set tabstop=2
 set smarttab
 set shiftround
-set showcmd
 set hidden
 set incsearch
 set hlsearch|nohlsearch
