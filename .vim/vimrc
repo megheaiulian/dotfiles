@@ -26,6 +26,7 @@ set number
 set shortmess+=I
 set mouse=a
 set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵
+set showmatch
 set autoread
 set noswapfile
 set nobackup
@@ -36,7 +37,7 @@ set switchbuf=useopen,usetab
 set wildmenu
 set complete=.,w,b,u,t,i,k
 set omnifunc=syntaxcomplete#Complete
-set completeopt=longest,menuone
+set completeopt=menuone,preview,noinsert,noselect
 set pumheight=15
 set autoindent
 set expandtab
