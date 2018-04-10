@@ -22,6 +22,34 @@ else
   let &t_SR .= "\<Esc>[4 q"
   let &t_EI .= "\<Esc>[2 q"
 endif
+set number
+set shortmess+=I
+set showmode
+set mouse=a
+set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵
+set autoread
+set noswapfile
+set nobackup
+set nowrap
+set splitright
+set splitbelow
+set switchbuf=useopen,usetab
+set wildmenu
+set wildmode=longest:full,list:full
+set previewheight=20
+set complete=.,w,b,u,t,i,k
+set omnifunc=syntaxcomplete#Complete
+set completeopt=longest,menuone
+set pumheight=15
+set autoindent
+set expandtab
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set smarttab
+set shiftround
+set showcmd
+set hidden
 set incsearch
 set hlsearch|nohlsearch
 set backspace=indent,eol,start
@@ -36,37 +64,13 @@ if &startofline
           \ autocmd! vimrc_stayput CursorMoved,CursorMovedI
   augroup END
 endif
-set splitright
-set splitbelow
-set switchbuf=useopen,usetab
-set wildmenu
-set wildmode=longest:full,list:full
-set complete=.,w,b,u,t,i,k
-set omnifunc=syntaxcomplete#Complete
-set completeopt=longest,menuone
-set nowrap
-set nobackup
-set noswapfile
-set pumheight=15
-set number
-set autoread
-set shiftround
-set expandtab
-set showcmd
-set hidden
-set diffopt+=context:5,vertical,iwhite
-set shortmess=atToOIc
-set updatetime=750
-set previewheight=20
-set mouse=a
-set list listchars=tab:▸\ ,trail:-,space:.,extends:>,precedes:<,nbsp:⎵,eol:↲
-set showmode
 set sessionoptions-=options
+set updatetime=750
 set timeoutlen=1200
 set ttimeoutlen=50
 set lazyredraw
 set ttyfast
-set clipboard^=unnamedplus,unnamed
+" set clipboard^=unnamedplus,unnamed
 function! AFTERLOAD()
   set statusline=%f\ %h%m%r%w
   set laststatus=2
@@ -84,15 +88,14 @@ endif
 filetype plugin indent on
 
 nnoremap <Esc><Esc> :nohlsearch<CR>
-" Jump to start of function
+
 nnoremap ]] ]m
 nnoremap [[ [m
 
-" Grep for word under the cursor
 if executable('rg')
-        set grepprg=rg\ --vimgrep
+  set grepprg=rg\ --vimgrep
 elseif executable('ag')
-        set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
+  set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
 endif
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 
@@ -107,7 +110,6 @@ AutoCmd BufNewFile,BufReadPre * packadd vim-repeat
 AutoCmd BufNewFile,BufReadPre * packadd vim-commentary
 AutoCmd BufNewFile,BufReadPre * packadd vim-surround
 AutoCmd BufNewFile,BufReadPre * packadd vim-fugitive
-AutoCmd BufNewFile,BufReadPre * packadd vim-yankstack
 
 nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap j gj
@@ -118,16 +120,16 @@ nnoremap <C-s> :update<CR>
 inoremap <C-s> <Esc>:update<CR>
 nnoremap <C-q> :bwipeout<CR>
 nnoremap ,q :bdelete<CR>
-" nnoremap <silent><expr> q winnr('$') != 1 ? ':<C-u>close<CR>' : ""
+nnoremap <silent><expr> <Space>x winnr('$') != 1 ? ':<C-u>close<CR>' : ""
 xnoremap <C-s> <C-C>:<C-u>update<CR>
 nnoremap <expr> 0 virtcol('.') - 1 <= indent('.') && col('.') > 1 ? '0' : '_'
 nnoremap H ^
 nnoremap L $
 vnoremap L g_
-nnoremap <silent> <Tab>      :wincmd w<CR>
-nnoremap <silent> <S-Tab>      :wincmd W<CR>
-nnoremap <silent> <C-Up> : resize -1<CR>
-nnoremap <silent> <C-Down> : resize +1<CR>
+nnoremap <silent> <Tab> :wincmd w<CR>
+nnoremap <silent> <S-Tab> :wincmd W<CR>
+nnoremap <silent> <C-Up> :resize -1<CR>
+nnoremap <silent> <C-Down> :resize +1<CR>
 nnoremap <silent> <C-Left> :vertical resize +1<CR>
 nnoremap <silent> <C-Right> :vertical resize -1<CR>
 vnoremap . :normal .<CR>
@@ -143,6 +145,11 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <Space><Space> :tabnew %<CR>
 nnoremap <Space>q :tabclose<CR>
+nnoremap n nzzzv
+nnoremap N Nzzzv
+vnoremap <Space>y "+
+vnoremap <Space>p "+
+nnoremap <Space>p "+
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 function! s:VSetSearch()
   let l:temp = @@
@@ -164,22 +171,12 @@ map [1;2D <S-Left>
 
 command! RemoveTrailingSpaces %s/\s\+$
 
-colorscheme apprentice
+silent! colorscheme hybrid
+" hi Comment cterm=italic
+" let g:spacegray_use_italics = 1
+
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
-
-" let g:ctrlp_max_files = 0
-" let g:ctrlp_working_path_mode = ''
-" let g:ctrlp_switch_buffer = 0
-" let g:ctrlp_use_caching = 0
-" let g:ctrlp_show_hidden = 1
-" let g:ctrlp_open_multi = '1v'
-" let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-" nnoremap <C-p> :packadd ctrlp.vim<CR>:CtrlP<CR>
-" nnoremap <Bs> :packadd ctrlp.vim<CR>:CtrlPBuffer<CR>
-" nnoremap <C-_> :packadd ctrlp.vim<CR>:CtrlPMRUFiles<CR>
-" nnoremap <C-d> :packadd ctrlp.vim<CR>:CtrlPCurFile<CR>
 
 let g:ale_sign_error = '→'
 let g:ale_sign_warning = '→'
