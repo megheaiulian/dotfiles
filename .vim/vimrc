@@ -108,7 +108,6 @@ AutoCmd BufNewFile,BufReadPre * packadd vim-repeat
 AutoCmd BufNewFile,BufReadPre * packadd vim-commentary
 AutoCmd BufNewFile,BufReadPre * packadd vim-surround
 AutoCmd BufNewFile,BufReadPre * packadd vim-fugitive
-AutoCmd CmdLineEnter * packadd vim-over
 
 nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap j gj
@@ -144,7 +143,8 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <Space><Space> :tabnew %<CR>
 nnoremap <Space>q :tabclose<CR>
-nnoremap <Space>s :OverCommandLine<CR>%s/
+nnoremap <Space>s :packadd vim-over<CR>:OverCommandLine<CR>%s/
+nnoremap <Space>S :packadd vim-over<CR>:OverCommandLine<CR>s/
 nnoremap n nzzzv
 nnoremap N Nzzzv
 vnoremap <Space>y "+
