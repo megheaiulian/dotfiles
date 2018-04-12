@@ -187,4 +187,4 @@ filetype plugin indent on
 silent! syntax enable
 
 silent! colorscheme hybrid
-hi Comment cterm=italic
+" hi Comment cterm=italic
