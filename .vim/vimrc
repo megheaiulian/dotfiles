@@ -24,16 +24,9 @@ if &startofline
           \ autocmd! vimrc_stayput CursorMoved,CursorMovedI
   augroup END
 endif
-if exists('$TMUX')
-  let &t_SI .= "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-  let &t_SR .= "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-  let &t_EI .= "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-else
-  let &t_SI .= "\<Esc>[6 q"
-  let &t_SR .= "\<Esc>[4 q"
-  let &t_EI .= "\<Esc>[2 q"
-endif
-
+let &t_SI = "\e[6 q"
+let &t_SR = "\e[4 q"
+let &t_EI = "\e[2 q"
 silent! set smartindent autoindent shiftround shiftwidth=2 expandtab tabstop=2 smarttab softtabstop=2
 silent! set foldclose=all foldcolumn=0 nofoldenable foldlevel=0 foldmarker& foldmethod=indent
 silent! set backspace=indent,eol,start nrformats=hex formatoptions=cmMj nojoinspaces
@@ -104,7 +97,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <C-x> <C-w>x
 nnoremap <Space><Space> :tabnew %<CR>
 nnoremap <Space>q :tabclose<CR>
 vnoremap <Space>y "+
