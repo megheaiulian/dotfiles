@@ -175,13 +175,7 @@ let g:asterisk#keeppos = 1
 AutoCmd VimEnter * packadd traces.vim
 let g:traces_preserve_view_state  = 1
 
-function! s:mkdir()
-  let s:dir = expand('<afile>:p:h')
-  if !isdirectory(s:dir)
-    call mkdir(s:dir, 'p')
-  endif
-endfunction
-AutoCmd BufWritePre * call s:mkdir()
+AutoCmd BufWritePre * call mkdir#Easy()
 
 filetype plugin indent on
 silent! syntax enable
