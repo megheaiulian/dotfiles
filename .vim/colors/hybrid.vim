@@ -26,7 +26,7 @@ if ($TERM =~# '256' || &t_Co >= 256)
   let s:changebg   = "60"
   let s:changefg   = "189"
   let s:foreground = "250"
-  let s:selection  = "237"
+  let s:selection  = "239"
   let s:line       = "235"
   let s:comment    = "243"
   let s:red        = "167"
@@ -158,7 +158,8 @@ exe "hi! PmenuSel"      .s:fg_foreground  .s:bg_selection   .s:fmt_revr
 "		PmenuSbar"
 "		PmenuThumb"
 exe "hi! Question"      .s:fg_green       .s:bg_none        .s:fmt_none
-exe "hi! Search"        .s:fg_background  .s:bg_yellow      .s:fmt_none
+exe "hi! Incsearch"     .s:fg_yellow      .s:bg_darkcolumn  .s:fmt_bold
+exe "hi! Search"        .s:fg_red         .s:bg_darkcolumn  .s:fmt_bold
 exe "hi! SpecialKey"    .s:fg_selection   .s:bg_none        .s:fmt_none
 exe "hi! SpellBad"      .s:fg_red         .s:bg_none        .s:fmt_undr
 exe "hi! SpellCap"      .s:fg_blue        .s:bg_none        .s:fmt_undr
@@ -255,5 +256,4 @@ hi! link diffAdded Special
 "		diffSubname
 "		diffComment
 
-"B
 "}}}
