@@ -20,7 +20,7 @@ silent! set noshowmatch matchtime=1 shortmess+=I
 silent! set noruler rulerformat= laststatus=2 statusline=%f\ %=\ %m%r%y%w\ %3l/%L:%-2c
 silent! set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵ 
 silent! set splitbelow splitright switchbuf=useopen,usetab 
-silent! set scrolloff=5 sidescroll=1 sidescrolloff=5 nostartofline
+silent! set scrolloff=5 sidescrolloff=5 nostartofline
 if &startofline
   augroup vimrc_stayput
     autocmd!
@@ -48,10 +48,10 @@ silent! set incsearch hlsearch|nohlsearch
 silent! set complete=.,w,b,u,t,i,k omnifunc=syntaxcomplete#Complete
 silent! set completeopt=menuone,preview,noinsert,noselect pumheight=10
 silent! set wildmenu wildoptions= wildignorecase
-silent! set updatetime=750 timeout timeoutlen=500 ttimeout ttimeoutlen=50 ttyfast lazyredraw
+silent! set updatetime=300 timeout timeoutlen=500 ttimeout ttimeoutlen=50 ttyfast lazyredraw
 if executable('rg')
-  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-  set grepformat=%f:%l:%c:%m,%f:%l%m,%f\ \ %l%m
+  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepformat^=%f:%l:%c:%m
 elseif executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
   set grepformat^=%f:%l:%c:%m
@@ -59,7 +59,7 @@ endif
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
-AutoCmd FocusGained,BufEnter,CursorHold,CursorHoldI,BufLeave * if mode() != 'c' | checktime | endif
+AutoCmd FocusGained,BufEnter,CursorHold,CursorHoldI * if !bufexists("[Command Line]") | checktime | endif
 AutoCmd BufEnter * syntax sync minlines=99999
 AutoCmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe 'normal! g`"zz' | endif
 AutoCmd CmdLineEnter * packadd cmdline-completion
@@ -68,7 +68,6 @@ AutoCmd QuickfixCmdPost [^l]* nested copen | wincmd p
 AutoCmd QuickfixCmdPost l* nested lopen | wincmd p
 AutoCmd BufEnter * call timer_start(100, function('pack_delayed#plugins'))
 
-nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap ]] ]m
 nnoremap [[ [m
 nnoremap <Esc><Esc> :nohlsearch<CR>
@@ -112,12 +111,15 @@ inoremap <C-v> <ESC>"+gPa
 nnoremap <Space>s :%s/
 nnoremap <Space>S :s/
 vnoremap <Space>s :s/
+nnoremap <Space>k :call SyntaxAttr()<CR>
 map <Leader><Leader> :set cursorline!<CR>
 nnoremap <silent> n nzz:call blink#Match()<CR>
 nnoremap <silent> N Nzz:call blink#Match()<CR>
 cnoremap <silent> <expr> <enter> center#Search()
+nnoremap ,f :GrepJob! '\b<C-R><C-W>\b'<CR>
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+command -nargs=+ -complete=file -bar Rg silent! grep! <args>|cwindow|redraw!
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 map [1;5A <C-Up>
 map [1;5B <C-Down>
 map [1;5C <C-Left>
@@ -128,9 +130,12 @@ map [1;2C <S-Right>
 map [1;2D <S-Left>
 
 " ale lint
+nmap <silent> [e <Plug>(ale_previous_wrap)
+nmap <silent> ]e <Plug>(ale_next_wrap)
 let g:ale_sign_error = '→'
 let g:ale_sign_warning = '→'
 let g:ale_sign_info = 'i'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_pattern_options_enabled = 1
 let g:ale_fixers = {
       \ 'javascript': ['eslint'],
@@ -185,3 +190,5 @@ silent! syntax enable
 
 silent! colorscheme hybrid
 " hi Comment cterm=italic
+highlight ALEError ctermfg=131
+highlight ALEWarning ctermfg=229

@@ -5,7 +5,9 @@ function pack_delayed#plugins(...) abort
   packadd hlyank.vim
   packadd asyncdo.vim
   packadd traces.vim
-  packadd ferret
+  packadd vim-makejob
+  packadd vim-ags
+  packadd quickfix-reflector.vim
   packadd vim-sneak
   packadd vim-prettier
 endfunction
