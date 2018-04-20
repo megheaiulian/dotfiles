@@ -18,7 +18,7 @@ let g:loaded_netrwPlugin = 1
 silent! set number nowrap
 silent! set noshowmatch matchtime=1 shortmess+=I
 silent! set noruler rulerformat= laststatus=2 statusline=%f\ %=\ %m%r%y%w\ %3l/%L:%-2c
-silent! set list listchars=tab:▸\ ,eol:¬,trail:~,space:·,extends:>,precedes:<,nbsp:⎵ 
+silent! set list listchars=tab:▷┅ ,eol:¬,trail:~,space:·,extends:»,precedes:«,nbsp:⦸ 
 silent! set splitbelow splitright switchbuf=useopen,usetab 
 silent! set scrolloff=5 sidescrolloff=5 nostartofline
 if &startofline
@@ -48,9 +48,9 @@ silent! set incsearch hlsearch|nohlsearch
 silent! set complete=.,w,b,u,t,i,k omnifunc=syntaxcomplete#Complete
 silent! set completeopt=menuone,preview,noinsert,noselect pumheight=10
 silent! set wildmenu wildoptions= wildignorecase
-silent! set updatetime=300 timeout timeoutlen=500 ttimeout ttimeoutlen=50 ttyfast lazyredraw
+silent! set updatetime=300 timeoutlen=1000 ttimeout ttimeoutlen=50 ttyfast lazyredraw
 if executable('rg')
-  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepprg=rg\ --vimgrep " \ --no-heading
   set grepformat^=%f:%l:%c:%m
 elseif executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
@@ -59,18 +59,26 @@ endif
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
-AutoCmd FocusGained,BufEnter,CursorHold,CursorHoldI * if !bufexists("[Command Line]") | checktime | endif
+AutoCmd FocusGained,BufEnter,CursorHold,CursorHoldI * if !bufexists("[Command Line]") | silent! checktime | endif
 AutoCmd BufEnter * syntax sync minlines=99999
 AutoCmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$') | exe 'normal! g`"zz' | endif
 AutoCmd CmdLineEnter * packadd cmdline-completion
 AutoCmd BufWritePre * call mkdir#Easy()
-AutoCmd QuickfixCmdPost [^l]* nested copen | wincmd p
-AutoCmd QuickfixCmdPost l* nested lopen | wincmd p
+" AutoCmd QuickfixCmdPost [^l]* nested copen | wincmd p
+" AutoCmd QuickfixCmdPost l* nested lopen | wincmd p
+AutoCmd FileType dirvish nnoremap <buffer> :!
+        \ :exe '!' \| norm R
+        \<Left><Left><Left><Left><Left>
+        \<Left><Left><Left><Left><Left>
 AutoCmd BufEnter * call timer_start(100, function('pack_delayed#plugins'))
 
+nnoremap <Esc><Esc> :nohlsearch<CR>
 nnoremap ]] ]m
 nnoremap [[ [m
-nnoremap <Esc><Esc> :nohlsearch<CR>
+nnoremap [q :cprev<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
 nnoremap j gj
 nnoremap k gk
 vnoremap > >gv
@@ -108,15 +116,16 @@ vnoremap <Space>y "+
 vnoremap <Space>p "+
 nnoremap <Space>p "+
 inoremap <C-v> <ESC>"+gPa
-nnoremap <Space>s :%s/
-nnoremap <Space>S :s/
-vnoremap <Space>s :s/
+nnoremap <Space>s :OverCommandLine<CR>%s/
+nnoremap <Space>S :OverCommandLine<CR>s/
+vnoremap <Space>s :OverCommandLine<CR>s/
 nnoremap <Space>k :call SyntaxAttr()<CR>
 map <Leader><Leader> :set cursorline!<CR>
 nnoremap <silent> n nzz:call blink#Match()<CR>
 nnoremap <silent> N Nzz:call blink#Match()<CR>
 cnoremap <silent> <expr> <enter> center#Search()
-nnoremap ,f :GrepJob! '\b<C-R><C-W>\b'<CR>
+nnoremap gr :vimgrep <cword> *<CR>
+nnoremap ,f :GrepJob! '\b<C-R><C-W>\b'<CR>:cw<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 command -nargs=+ -complete=file -bar Rg silent! grep! <args>|cwindow|redraw!
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -160,6 +169,13 @@ map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 map <M-;> <Plug>Sneak_,
 
+" editorconfig
+let g:editorconfig_root_chdir = 1
+let g:editorconfig_verbose = 1
+let g:editorconfig_blacklist = {
+      \ 'filetype': ['git.*', 'fugitive'],
+      \ 'pattern': ['\.un~$']}
+
 " leaderf
 let g:Lf_ShortcutF = '<C-P>'
 let g:Lf_ShortcutB = '<Bs>'
@@ -188,7 +204,7 @@ let g:prettier#config#use_tabs = 'true'
 filetype plugin indent on
 silent! syntax enable
 
-silent! colorscheme hybrid
+silent! colorscheme apprentice
 " hi Comment cterm=italic
 highlight ALEError ctermfg=131
 highlight ALEWarning ctermfg=229
