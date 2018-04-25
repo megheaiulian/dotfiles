@@ -99,9 +99,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <Space><Space> :tabnew %<CR>
 nnoremap <Space>q :tabclose<CR>
-vnoremap <Space>y "+
-vnoremap <Space>p "+
-nnoremap <Space>p "+
+vnoremap <Space>y "+y
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
 inoremap <C-v> <ESC>"+gPa
 nnoremap <Space>s :OverCommandLine<CR>%s/
 nnoremap <Space>S :OverCommandLine<CR>s/
@@ -195,6 +195,8 @@ let g:hopping#keymapping = {
 \	"\<C-u>" : "<Over>(scroll-u)",
 \	"\<C-d>" : "<Over>(scroll-d)",
 \}
+
+nnoremap <Space>h :HoppingStart<CR>
 
 filetype plugin indent on
 silent! syntax enable
